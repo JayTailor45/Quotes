@@ -14,9 +14,14 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
         const quotesCollection = db.collection('quotes');
 
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.set('view engine', 'ejs')
 
         app.get(`/`, (req, res) => {
-            res.sendFile(path.join(__dirname, `index.html`));
+            const cursor = db.collection(`quotes`).find().toArray()
+                .then(result => {
+                    res.render('index.ejs', { quotes: result })
+                })
+                .catch(console.error);
         });
 
         app.post('/quotes', (req, res) => {
