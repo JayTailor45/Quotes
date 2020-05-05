@@ -13,8 +13,10 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
         const db = client.db('quote_app');
         const quotesCollection = db.collection('quotes');
 
+        app.use(express.static('public'));
+        app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
-        app.set('view engine', 'ejs')
+        app.set('view engine', 'ejs');
 
         app.get(`/`, (req, res) => {
             const cursor = db.collection(`quotes`).find().toArray()
@@ -30,7 +32,25 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
                     return res.redirect('/');
                 })
                 .catch(error => console.error(error));
-        })
+        });
+
+        app.put('/quotes', (req, res) => {
+            quotesCollection.findOneAndUpdate(
+                { name: 'JayTailor45' },
+                {
+                    $set: {
+                        name: req.body.name,
+                        quote: req.body.quote
+                    }
+                },
+                {
+                    upsert: true
+                })
+                .then(result => {
+                    res.send({success: true});
+                })
+                .catch(console.error);
+        });
 
         app.listen(PORT, () => {
             console.log(`Server started listening on port ${PORT}`);
