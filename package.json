@@ -1,0 +1,16 @@
+{
+  "name": "quotes",
+  "version": "1.0.0",
+  "description": "MongoDB CRUD Operation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mongo",
+    "mongodb",
+    "crud"
+  ],
+  "author": "JayTailor45",
+  "license": "ISC"
+}
