@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient
+const {MongoClient, ObjectId} = require('mongodb')
 const path = require('path');
 const app = express();
 
@@ -35,17 +35,15 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
         });
 
         app.put('/quotes', (req, res) => {
+            debugger
             quotesCollection.findOneAndUpdate(
-                { name: 'JayTailor45' },
+                { _id: ObjectId(req.body._id) },
                 {
                     $set: {
                         name: req.body.name,
                         quote: req.body.quote
                     }
-                },
-                {
-                    upsert: true
-                })
+                }, {upsert: false})
                 .then(result => {
                     res.send({success: true});
                 })
