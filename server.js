@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {MongoClient, ObjectId} = require('mongodb')
-const path = require('path');
+const {MongoClient, ObjectId} = require('mongodb');
 const app = express();
 
 const PORT = 3000;
@@ -35,7 +34,6 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
         });
 
         app.put('/quotes', (req, res) => {
-            debugger
             quotesCollection.findOneAndUpdate(
                 { _id: ObjectId(req.body._id) },
                 {
@@ -48,6 +46,16 @@ MongoClient.connect(`mongodb://localhost:27017/quote_app`, { useUnifiedTopology:
                     res.send({success: true});
                 })
                 .catch(console.error);
+        });
+
+        app.delete('/quotes', (req, res) => {
+            quotesCollection.remove(
+                { _id: ObjectId(req.body._id) },
+            )
+            .then(result => {
+                res.send({success: true});
+            })
+            .catch(console.error);
         });
 
         app.listen(PORT, () => {

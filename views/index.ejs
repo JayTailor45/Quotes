@@ -29,6 +29,7 @@
           <span><%= quotes[i].name %></span>:
           <span><%= quotes[i].quote %></span>
           <button onclick="setEditFields('<%= quotes[i]._id %>', '<%= quotes[i].name %>', '<%= quotes[i].quote %>')">Edit</button>
+          <button onclick="deleteQuote('<%= quotes[i]._id %>')">Remove</button>
         </li>
       <% } %>
     </ul>
